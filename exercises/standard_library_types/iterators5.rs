@@ -11,9 +11,8 @@
 //
 // Make the code compile and the tests pass.
 
-// I AM NOT DONE
-
 use std::collections::HashMap;
+use std::iter::empty;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Progress {
@@ -35,6 +34,9 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // map is a hashmap with String keys and Progress values.
     // map = { "variables1": Complete, "from_str": None, ... }
+    map.into_iter().filter(|(k, v)| v == &&value).count()
+    // Sam did it with fold, and I think that's a bit cleaner:
+    // map.iter().fold(0, |acc, (name, progress)| if progress == &value {acc + 1} else {acc})
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -53,6 +55,11 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
     // collection is a slice of hashmaps.
     // collection = [{ "variables1": Complete, "from_str": None, ... },
     //     { "variables2": Complete, ... }, ... ]
+    collection
+        .iter()
+        .flatten() // I tried to reimplement this myself and do not recommend it.
+        .filter(|(k, v)| v == &&value)
+        .count()
 }
 
 #[cfg(test)]

@@ -3,16 +3,19 @@
 // can offer. Follow the steps to complete the exercise.
 // As always, there are hints if you execute `rustlings hint iterators2`!
 
-// I AM NOT DONE
+use std::iter::once;
 
 // Step 1.
 // Complete the `capitalize_first` function.
 // "hello" -> "Hello"
 pub fn capitalize_first(input: &str) -> String {
     let mut c = input.chars();
+    // Thanks to John C for the suggestion to look at chain().
+    // Also we're just handling ASCII here. Sorry anyone not using ASCII!
+    // (The alternative is trying to figure out how to turn a ToUppercase struct into a char.)
     match c.next() {
         None => String::new(),
-        Some(first) => ???,
+        Some(first) => once(first.to_ascii_uppercase()).chain(c).collect::<String>()
     }
 }
 
@@ -20,16 +23,16 @@ pub fn capitalize_first(input: &str) -> String {
 // Apply the `capitalize_first` function to a slice of string slices.
 // Return a vector of strings.
 // ["hello", "world"] -> ["Hello", "World"]
-pub fn capitalize_words_vector(words: &[&str]) -> Vec<String> {
-    vec![]
+pub fn capitalize_words_vector(words: &[&str]) -> Vec<String> { 
+    words.iter().map(|w| capitalize_first(w)).collect::<Vec<String>>()
 }
 
 // Step 3.
 // Apply the `capitalize_first` function again to a slice of string slices.
 // Return a single string.
 // ["hello", " ", "world"] -> "Hello World"
-pub fn capitalize_words_string(words: &[&str]) -> String {
-    String::new()
+pub fn capitalize_words_string(words: &[&str]) -> String { 
+    capitalize_words_vector(words).join("")
 }
 
 #[cfg(test)]

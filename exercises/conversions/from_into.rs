@@ -37,6 +37,13 @@ impl Default for Person {
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        if s.is_empty() {
+            return Person.default;
+        }
+        let string_parts = s.split(",");
+        let name = string_parts.next();
+        // TODO: honestly I would rather impl TryFrom,
+        // and then impl From returning the default if we got an error.
     }
 }
 
